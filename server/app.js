@@ -4,10 +4,13 @@ const app = express();
 
 app.use((req, res, next) => {
 // write your logging code here
-
+//    Agent,Time,Method,Resource,Version,Status
+console.log(`${req.headers['user-agent']},${new Date().toISOString()},${req.method},${req.path},HTTP/${req.httpVersion},${res.statusCode}`);
+next();
 });
 
 app.get('/', (req, res) => {
+    res.status(200).send('ok');
 // write your code to respond "ok" here
 
 });
