@@ -11,7 +11,6 @@ const {LOG_FILE} = require('./logger');
 
 // //worked, but moved to logger.js
 // app.use((req, res, next) => {
-// // write your logging code here
 // //    Agent,Time,Method,Resource,Version,Status
 // let logA = `${req.headers['user-agent']},${new Date().toISOString()},${req.method},${req.path},HTTP/${req.httpVersion},${res.statusCode}`;
 // // let logB = `\n${req.headers['user-agent']},\n${new Date().toISOString()},\n${req.method},\n${req.path},\nHTTP/${req.httpVersion},\n${res.statusCode}`;
@@ -28,6 +27,8 @@ const {LOG_FILE} = require('./logger');
 
 
 app.use(logLogger);
+
+// "Pretty print" JSON response
 app.set('json spaces', 2);
 
 app.get('/', (req, res) => {
@@ -54,6 +55,10 @@ app.get('/logs', (req, res) => {
 
     res.json(rows);
   });
+});
+
+app.use((req, res) => {
+  res.status(404).send('Not Found');
 });
 
 

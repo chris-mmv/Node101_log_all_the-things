@@ -64,7 +64,11 @@ function logLogger(req, res, next) {
   const method = req.method;
   const resource = req.path;
   const version = `HTTP/${req.httpVersion}`;
-  const status = res.statusCode;
+  
+
+  // Wait until response is finished so statusCode is correct for 404
+  res.on('finish', () => {  
+    const status = res.statusCode;
 
   const line = `${agent},${time},${method},${resource},${version},${status}`;
 
@@ -73,6 +77,7 @@ function logLogger(req, res, next) {
   chain = chain
     .then(() => appendLine(line))
     .catch((err) => console.error('Log error:', err));
+  });
 
   next();
 }
